@@ -1,6 +1,12 @@
-using EducationHub.Application.Interfaces;
-using EducationHub.Application.Services;
+using EducationHub.Business.Entities;
+using EducationHub.Business.Interfaces.Repositories;
+using EducationHub.Business.Interfaces.Services;
+using EducationHub.Business.Services;
+using EducationHub.Infrastructure;
 using EducationHub.Infrastructure.Helpers;
+using EducationHub.Infrastructure.Repositories;
+using EducationHub.Shared.Environment;
+using EducationHub.Shared.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -32,7 +38,10 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
+builder.Services.AddSingleton<EducationHubContextDb>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
 
 var app = builder.Build();
 

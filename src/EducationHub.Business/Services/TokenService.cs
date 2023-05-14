@@ -1,11 +1,12 @@
 ﻿using EducationHub.Business.Entities;
 using EducationHub.Business.Interfaces.Services;
-using EducationHub.Infrastructure.Helpers;
+using EducationHub.Shared.Environment;
+using EducationHub.Shared.Helpers;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace EducationHub.Application.Services
+namespace EducationHub.Business.Services
 {
     public class TokenService : ITokenService
     {

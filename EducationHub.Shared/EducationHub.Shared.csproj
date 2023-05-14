@@ -5,8 +5,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EducationHub.Business\EducationHub.Business.csproj" />
-  </ItemGroup>
-
 </Project>

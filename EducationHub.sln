@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\.env = src\.env
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationHub.Application", "EducationHub.Application\EducationHub.Application.csproj", "{D7EC9F93-0568-49B5-85EA-DE44ED31EE85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationHub.Shared", "EducationHub.Shared\EducationHub.Shared.csproj", "{421A3C6D-E58E-47AC-A06B-0C697153000A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,10 +34,10 @@ Global
 		{4DDE5ECB-9CE2-4149-A946-04291D3369C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DDE5ECB-9CE2-4149-A946-04291D3369C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DDE5ECB-9CE2-4149-A946-04291D3369C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7EC9F93-0568-49B5-85EA-DE44ED31EE85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7EC9F93-0568-49B5-85EA-DE44ED31EE85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7EC9F93-0568-49B5-85EA-DE44ED31EE85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7EC9F93-0568-49B5-85EA-DE44ED31EE85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{421A3C6D-E58E-47AC-A06B-0C697153000A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{421A3C6D-E58E-47AC-A06B-0C697153000A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{421A3C6D-E58E-47AC-A06B-0C697153000A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{421A3C6D-E58E-47AC-A06B-0C697153000A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
