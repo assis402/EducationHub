@@ -1,6 +1,6 @@
-﻿using EducationHub.API.Dtos;
-using EducationHub.Business.Entities;
+﻿using EducationHub.Business.Entities;
 using EducationHub.Business.Interfaces.Services;
+using EducationHub.Shared.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

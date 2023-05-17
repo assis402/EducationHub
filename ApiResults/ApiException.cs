@@ -1,12 +1,12 @@
-namespace Presentation.Utils
+namespace ApiResults
 {
     public class ApiException : Exception
     {
         private List<string> _errors;
-        
+
         public IReadOnlyList<string> Errors => _errors;
 
-        public ApiException() {}
+        public ApiException() { }
 
         public ApiException(string message, List<string> errors) : base(message)
         {

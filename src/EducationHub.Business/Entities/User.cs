@@ -1,11 +1,11 @@
-﻿using EducationHub.API.Dtos;
-using EducationHub.Business.Helpers;
+﻿using EducationHub.Business.Helpers;
+using EducationHub.Shared.Dtos;
 using MongoDB.Driver;
 
 namespace EducationHub.Business.Entities
 {
     public class User : BaseEntity
-    {    
+    {
         public User(LoginDto loginDto)
         {
             Email = loginDto.Email;
@@ -39,5 +39,8 @@ namespace EducationHub.Business.Entities
 
         public FilterDefinition<User> LoginFilterDefinition()
             => Builders<User>.Filter.Where(x => x.Email.Equals(this.Email) && x.Password.Equals(this.Password));
+
+        public FilterDefinition<User> FindByEmailOrUsernameFilterDefinition()
+            => Builders<User>.Filter.Where(x => x.Email.Equals(this.Email) || x.Username.Equals(this.Username));
     }
 }

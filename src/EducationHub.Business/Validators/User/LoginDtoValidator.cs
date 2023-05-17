@@ -1,4 +1,4 @@
-﻿using EducationHub.API.Dtos;
+﻿using EducationHub.Shared.Dtos;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,10 @@
-﻿using EducationHub.API.Dtos;
+﻿using ApiResults;
 using EducationHub.Business.Entities;
 using EducationHub.Business.Interfaces.Repositories;
 using EducationHub.Business.Interfaces.Services;
+using EducationHub.Business.Messages;
+using EducationHub.Shared.Dtos;
+using Microsoft.AspNetCore.Http;
 
 namespace EducationHub.Business.Services
 {
@@ -27,10 +30,16 @@ namespace EducationHub.Business.Services
             return _tokenService.GenerateToken(result);
         }
 
-        public async Task SignUp(SignUpDto signUpDto)
+        public async Task<ApiResult> SignUp(SignUpDto signUpDto)
         {
             var user = new User(signUpDto);
+            var existsUser = await _repository.FindOneAsync(user.FindByEmailOrUsernameFilterDefinition());
+
+            if (existsUser is not null) 
+                return Result.Error(EducationHubErrors.SignUp_Error_UserAlreadyExists);
+
             await _repository.InsertOneAsync(user);
+            return Result.Success(EducationHubMessages.SignUp_Success);
         }
     }
 }

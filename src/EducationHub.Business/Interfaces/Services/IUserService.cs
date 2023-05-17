@@ -1,6 +1,6 @@
-﻿using EducationHub.API.Dtos;
-using EducationHub.Business.Entities;
+﻿using EducationHub.Business.Entities;
 using EducationHub.Business.Interfaces.Repositories;
+using EducationHub.Shared.Dtos;
 
 namespace EducationHub.Business.Interfaces.Services
 {
@@ -8,6 +8,6 @@ namespace EducationHub.Business.Interfaces.Services
     {
         public Task<string> Login(LoginDto loginDto);
 
-        public Task SignUp(SignUpDto signUpDto);
+        public Task<ApiResult> SignUp(SignUpDto signUpDto);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace EducationHub.API.Dtos
+﻿namespace EducationHub.Shared.Dtos
 {
     public class SignUpDto
     {
