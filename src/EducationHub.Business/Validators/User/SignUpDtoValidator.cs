@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace EducationHub.Business.Validators.User
 {
-    public class LoginDtoValidator : AbstractValidator<LoginDto>
+    public class SignUpDtoValidator : AbstractValidator<SignUpDto>
     {
-        public LoginDtoValidator()
+        public SignUpDtoValidator()
         {
             RuleFor(x => x.Email)
                 .NotEmpty()

@@ -3,8 +3,10 @@ using EducationHub.Business.Entities;
 using EducationHub.Business.Interfaces.Repositories;
 using EducationHub.Business.Interfaces.Services;
 using EducationHub.Business.Messages;
+using EducationHub.Business.Validators.User;
 using EducationHub.Shared.Dtos;
 using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace EducationHub.Business.Services
 {
@@ -20,14 +22,29 @@ namespace EducationHub.Business.Services
             _tokenService = tokenService;
         }
 
-        public async Task<string> Login(LoginDto loginDto)
+        public async Task<ApiResult> Login(LoginDto loginDto)
         {
+            var validation = new LoginDtoValidator().Validate(loginDto);
+
+            if (!validation.IsValid)
+                return Result.Error(
+                    EducationHubErrors.Application_Error_InvalidRequest, 
+                    validation.Errors);
+
             var user = new User(loginDto);
             var result = await _repository.FindOneAsync(user.LoginFilterDefinition());
 
-            if (result is null) return null;
+            if (result is null)
+                return Result.Error(
+                    EducationHubErrors.Login_Error_WrongEmailOrPassword, 
+                    HttpStatusCode.NotFound);
 
-            return _tokenService.GenerateToken(result);
+            var token = _tokenService.GenerateToken(result);
+
+            return Result.Success(
+                EducationHubMessages.Login_Success, 
+                statusCode: HttpStatusCode.OK,
+                responseData: new { Token = token });
         }
 
         public async Task<ApiResult> SignUp(SignUpDto signUpDto)

@@ -12,48 +12,38 @@ namespace EducationHub.API.Controllers
     {
         private readonly IUserService _userService;
 
-        public UserController(ITokenService tokenService, 
-            IUserService userService)
-        {
-            _userService = userService;
-        }
+        public UserController(IUserService userService) => _userService = userService;
 
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<dynamic>> AuthenticateAsync([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> AuthenticateAsync([FromBody] LoginDto loginDto)
         {
-            var token = await _userService.Login(loginDto);
-
-            if (token is null) return NotFound();
-
-            return new
-            {
-                token
-            };
+            var result = await _userService.Login(loginDto);
+            return result.Convert();
         }
 
         [HttpPost]
         [Route("signup")]
-        public async Task<ActionResult<dynamic>> SignUpAsync([FromBody] SignUpDto signUpDto)
+        public async Task<IActionResult> SignUpAsync([FromBody] SignUpDto signUpDto)
         {
-            await _userService.SignUp(signUpDto);
-            return Ok();
+            var result = await _userService.SignUp(signUpDto);
+            return result.Convert();
         }
 
-        [HttpGet]
-        [Authorize]
-        [Route("test")]
-        public async Task<ActionResult<dynamic>> Test()
-        {
-            return "test";
-        }
+        //[HttpGet]
+        //[Authorize]
+        //[Route("test")]
+        //public async Task<ActionResult<dynamic>> Test()
+        //{
+        //    return "test";
+        //}
 
-        [HttpGet]
-        [Authorize(Roles = "manager")]
-        [Route("test2")]
-        public async Task<ActionResult<dynamic>> Test2()
-        {
-            return "test";
-        }
+        //[HttpGet]
+        //[Authorize(Roles = "manager")]
+        //[Route("test2")]
+        //public async Task<ActionResult<dynamic>> Test2()
+        //{
+        //    return "test";
+        //}
     }
 }

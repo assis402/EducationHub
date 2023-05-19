@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using FluentValidation.Results;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ namespace ApiResults
 {
     public static class Utils
     {
-        public static string GetEnumDescription(this Enum value)
+        public static string Description(this Enum value)
         {
             var fieldInfo = value.GetType().GetField(value.ToString());
             var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
@@ -21,5 +22,8 @@ namespace ApiResults
             else
                 return value.ToString();
         }
+
+        public static IEnumerable<string> CastToString(this IEnumerable<ValidationFailure> validationFailures)
+            => validationFailures.Select(x => x.ToString());
     }
 }
