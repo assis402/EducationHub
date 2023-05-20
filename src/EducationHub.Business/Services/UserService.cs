@@ -1,5 +1,6 @@
 ﻿using ApiResults;
 using EducationHub.Business.Entities;
+using EducationHub.Business.Enums;
 using EducationHub.Business.Interfaces.Repositories;
 using EducationHub.Business.Interfaces.Services;
 using EducationHub.Business.Messages;
@@ -15,14 +16,17 @@ namespace EducationHub.Business.Services
         private readonly IBaseRepository<User> _repository;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
+        private readonly IUserActionEmailHistoryService _userActionEmailHistoryService;
 
         public UserService(IBaseRepository<User> repository,
             ITokenService tokenService,
-            IEmailService emailService)
+            IEmailService emailService,
+            IUserActionEmailHistoryService userActionEmailHistoryService)
         {
             _repository = repository;
             _tokenService = tokenService;
             _emailService = emailService;
+            _userActionEmailHistoryService = userActionEmailHistoryService;
         }
 
         public async Task<ApiResult> Login(LoginDto loginDto)
@@ -71,10 +75,13 @@ namespace EducationHub.Business.Services
                 if (existsUser is not null)
                     return Result.Error(EducationHubErrors.SignUp_Error_UserAlreadyExists);
 
-                _emailService.Send();
+                await _repository.InsertOneAsync(user);
 
-                //await _repository.InsertOneAsync(user);
+                var emailHistory = await _userActionEmailHistoryService.Insert(user.Id.ToString(), EmailType.AccountConfirmation);
+                
+                _emailService.SendAccountConfirmation(user.Email, emailHistory);
 
+                await _userActionEmailHistoryService.CompleteAction(emailHistory);
 
                 return Result.Success(EducationHubMessages.SignUp_Success);
             }

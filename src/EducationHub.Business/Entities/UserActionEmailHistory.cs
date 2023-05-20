@@ -1,6 +1,7 @@
 ﻿using EducationHub.Business.Enums;
 using EducationHub.Business.Helpers;
 using EducationHub.Shared.Helpers;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,18 @@ namespace EducationHub.Business.Entities
 
         public string Token { get; private set; }
 
+        public bool Completed { get; private set; }
+
         public DateTime SentAt { get; private set; }
 
         public DateTime? LastRetryAt { get; private set; }
+
+        public void CompleteAction() => Completed = true;
+
+        public UpdateDefinition<UserActionEmailHistory> CompleteActionUpdateDefinition()
+            => Builders<UserActionEmailHistory>.Update.Set(nameof(Completed).ToLower(), true);
+
+        public FilterDefinition<UserActionEmailHistory> FindByUserIdAndTypeFilterDefinition()
+            => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(this.UserId) || x.Type.Equals(this.Type));
     }
 }

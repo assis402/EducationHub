@@ -28,5 +28,11 @@ namespace EducationHub.Infrastructure.Repositories
         {
             await _entityCollection.UpdateOneAsync(entity.GetByIdDefinition<TEntity>(id), updateDefinition);
         }
+
+        public async Task UpdateAsync(FilterDefinition<TEntity> filterDefinition,
+            UpdateDefinition<TEntity> updateDefinition)
+        {
+            await _entityCollection.UpdateOneAsync(filterDefinition, updateDefinition);
+        }
     }
 }

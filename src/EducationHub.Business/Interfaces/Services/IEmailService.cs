@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EducationHub.Business.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace EducationHub.Business.Interfaces.Services
 {
     public interface IEmailService
     {
-        public Task Send(string recipientEmail);
+        public void SendAccountConfirmation(string recipientEmail, UserActionEmailHistory userActionEmailHistory);
     }
 }

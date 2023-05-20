@@ -42,7 +42,9 @@ builder.Services.AddSingleton<EducationHubContextDb>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IUserActionEmailHistoryService, UserActionEmailHistoryService>();
 builder.Services.AddTransient<IBaseRepository<User>, BaseRepository<User>>();
+builder.Services.AddTransient<IBaseRepository<UserActionEmailHistory>, BaseRepository<UserActionEmailHistory>>();
 
 var app = builder.Build();
 

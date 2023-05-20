@@ -8,35 +8,33 @@ using System.Text;
 using System.Threading.Tasks;
 using EducationHub.Shared.Environment;
 using Microsoft.AspNetCore.Http;
+using System.Reflection;
+using EducationHub.Business.Builders;
+using EducationHub.Business.Entities;
+using EducationHub.Business.Models;
+using EducationHub.Business.Enums;
 
 namespace EducationHub.Business.Services
 {
     public class EmailService : IEmailService
     {
         private const string SMTP_HOST = "smtp.gmail.com";
+        private readonly SmtpClient smtpClient;
 
-        public EmailService() { }
-
-        public async Task Send(string recipientEmail)
+        public EmailService() 
         {
-            var sender = Settings.EmailSender;
-            var smtpClient = new SmtpClient(SMTP_HOST)
+            smtpClient = new SmtpClient(SMTP_HOST)
             {
                 Port = 587,
-                Credentials = new NetworkCredential(sender, Settings.EmailSenderAppPass),
+                Credentials = new NetworkCredential(Settings.EmailSender, Settings.EmailSenderAppPass),
                 EnableSsl = true,
             };
+        }
 
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(sender),
-                Subject = "subject",
-                Body = "<h1>Hello</h1>",
-                IsBodyHtml = true,
-            };
-
-            mailMessage.To.Add(recipientEmail);
-            smtpClient.Send(mailMessage);
+        public void SendAccountConfirmation(string recipientEmail, UserActionEmailHistory userActionEmailHistory)
+        {
+            var email = new EmailBuilder().AccountConfirmation(recipientEmail, userActionEmailHistory.Token).Build();
+            smtpClient.Send(email);
         }
     }
 }

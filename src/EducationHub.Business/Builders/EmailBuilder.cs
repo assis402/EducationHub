@@ -1,5 +1,7 @@
 ﻿using EducationHub.Business.Enums;
 using EducationHub.Business.Models;
+using EducationHub.Shared.Environment;
+using EducationHub.Shared.Helpers;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,8 @@ namespace EducationHub.Business.Builders
 {
     internal class EmailBuilder
     {
-        private readonly Email _instance = new Email();
+        private readonly Email _instance = new ();
+        private readonly string _sender = Settings.EmailSender;
 
         internal EmailBuilder WithFrom(string email)
         {
@@ -40,6 +43,24 @@ namespace EducationHub.Business.Builders
             return this;
         }
 
-        internal Email Build() =>
+        internal EmailBuilder WithTo(string email)
+        {
+            _instance.To.Add(email);
+            return this;
+        }
+
+        internal EmailBuilder AccountConfirmation(string recipientEmail, string token)
+        {
+            var body = Utils.GetDocument(EmailType.AccountConfirmation.ToString(), "min.html");
+            body = body.Replace("[URL]", "google.com.br");
+
+            return WithFrom(_sender)
+                  .WithSubject("Confirmação de Conta - EducationHub")
+                  .WithType(EmailType.AccountConfirmation)
+                  .WithBody(body)
+                  .WithTo(recipientEmail);
+        }
+
+        internal Email Build() => _instance;
     }
 }

@@ -10,7 +10,7 @@
 		<PackageReference Include="MongoDB.Driver" Version="2.19.1" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\ApiResults\ApiResults.csproj" />
-	  <ProjectReference Include="..\..\EducationHub.Shared\EducationHub.Shared.csproj" />
+	  <ProjectReference Include="..\ApiResults\ApiResults.csproj" />
+	  <ProjectReference Include="..\EducationHub.Shared\EducationHub.Shared.csproj" />
 	</ItemGroup>
 </Project>
