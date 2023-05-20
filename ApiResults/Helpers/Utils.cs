@@ -1,14 +1,9 @@
-﻿using FluentValidation.Results;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using ApiResults.CustomAttributes;
+using FluentValidation.Results;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
-namespace ApiResults
+namespace ApiResults.Helpers
 {
     public static class Utils
     {
@@ -21,6 +16,17 @@ namespace ApiResults
                 return attributes[0].Description;
             else
                 return value.ToString();
+        }
+
+        public static HttpStatusCode StatusCode(this Enum value)
+        {
+            var fieldInfo = value.GetType().GetField(value.ToString());
+            var attributes = (StatusCodeAttribute[])fieldInfo.GetCustomAttributes(typeof(StatusCodeAttribute), false);
+
+            if (attributes.Length > 0)
+                return attributes[0].Code;
+            else
+                return HttpStatusCode.OK;
         }
 
         public static IEnumerable<string> CastToString(this IEnumerable<ValidationFailure> validationFailures)

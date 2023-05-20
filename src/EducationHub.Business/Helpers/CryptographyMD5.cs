@@ -18,12 +18,6 @@ namespace EducationHub.Business.Helpers
             return stringBuilder.ToString();
         }
 
-        //public static bool CompareWithUnencrypted(string unencrypted, string encrypted)
-        //{
-        //    using var md5Hash = MD5.Create();
-        //    var stringComparer = StringComparer.OrdinalIgnoreCase;
-
-        //    return stringComparer.Compare(Encrypt(unencrypted), encrypted).Equals(0);
-        //}
+        public static string EncryptRandomValue() => Encrypt(Guid.NewGuid().ToString());
     }
 }

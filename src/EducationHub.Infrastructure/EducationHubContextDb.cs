@@ -1,6 +1,5 @@
 using EducationHub.Business.Entities;
 using EducationHub.Shared.Environment;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;

@@ -6,13 +6,11 @@ namespace EducationHub.Infrastructure.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly EducationHubContextDb _context;
-        private IMongoCollection<TEntity> _entityCollection;
+        private readonly IMongoCollection<TEntity> _entityCollection;
 
         public BaseRepository(EducationHubContextDb context)
         {
-            _context = context;
-            _entityCollection = _context.Database.GetCollection<TEntity>(typeof(TEntity).Name.ToLower());
+            _entityCollection = context.Database.GetCollection<TEntity>(typeof(TEntity).Name.ToLower());
         }
 
         public async Task InsertOneAsync(TEntity user)

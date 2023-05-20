@@ -29,6 +29,10 @@ namespace EducationHub.Business.Entities
 
         public string Role { get; private set; }
 
+        public string EmailConfirmationToken { get; private set; }
+
+        public bool EmailConfirmed { get; private set; }
+
         public void ChangePassword(string newPassword)
         {
             Password = newPassword;
@@ -36,6 +40,9 @@ namespace EducationHub.Business.Entities
 
         public UpdateDefinition<User> ChangePasswordUpdateDefinition()
             => Builders<User>.Update.Set(nameof(Password).ToLower(), Password);
+
+        public UpdateDefinition<User> ConfirmEmailUpdateDefinition()
+            => Builders<User>.Update.Set(nameof(EmailConfirmed).ToLower(), true);
 
         public FilterDefinition<User> LoginFilterDefinition()
             => Builders<User>.Filter.Where(x => x.Email.Equals(this.Email) && x.Password.Equals(this.Password));

@@ -39,9 +39,10 @@ builder.Services.AddAuthentication(x =>
     });
 
 builder.Services.AddSingleton<EducationHubContextDb>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<ITokenService, TokenService>();
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IBaseRepository<User>, BaseRepository<User>>();
 
 var app = builder.Build();
 
