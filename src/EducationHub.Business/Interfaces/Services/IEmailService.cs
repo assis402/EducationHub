@@ -9,6 +9,6 @@ namespace EducationHub.Business.Interfaces.Services
 {
     public interface IEmailService
     {
-        public void SendAccountConfirmation(string recipientEmail, UserActionEmailHistory userActionEmailHistory);
+        public void SendAccountConfirmation(User user, UserActionEmailHistory userActionEmailHistory);
     }
 }

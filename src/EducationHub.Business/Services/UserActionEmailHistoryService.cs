@@ -2,11 +2,6 @@
 using EducationHub.Business.Enums;
 using EducationHub.Business.Interfaces.Repositories;
 using EducationHub.Business.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EducationHub.Business.Services
 {
@@ -21,20 +16,35 @@ namespace EducationHub.Business.Services
 
         public async Task<UserActionEmailHistory> Insert(string userId, EmailType emailType)
         {
-            var entity = new UserActionEmailHistory(userId, emailType);
-            //TODO: checar se existe outro com o mesmo tipo e apenas atualizar;
-            await _repository.InsertOneAsync(entity);
-            return entity;
+            var existentEntity = await _repository.FindOneAsync(UserActionEmailHistory.FindByUserIdAndTypeFilterDefinition(userId, emailType));
+
+            if (existentEntity is null)
+            {
+                var entity = new UserActionEmailHistory(userId, emailType);
+                await _repository.InsertOneAsync(entity);
+                return entity;
+            }
+            else
+            {
+                existentEntity.UpdateToResend();
+                await _repository.UpdateAsync(existentEntity, existentEntity.ResendUpdateDefinition());
+                return existentEntity;
+            }
         }
 
-        public async Task CompleteAction(string userId, EmailType emailType)
+        public async Task<bool> CompleteAction(string userId, EmailType emailType)
         {
+            var filterDefinition = UserActionEmailHistory.FindUncompletedFilterDefinition(userId, emailType);
 
-        }
+            var exists = await _repository.Exists(filterDefinition);
 
-        public async Task CompleteAction(UserActionEmailHistory entity)
-        {
-            await _repository.UpdateAsync(entity.FindByUserIdAndTypeFilterDefinition(), entity.CompleteActionUpdateDefinition());
+            if (!exists)
+                return false;
+
+            await _repository.UpdateAsync(filterDefinition, 
+                UserActionEmailHistory.CompleteUpdateDefinition());
+
+            return true;
         }
     }
 }

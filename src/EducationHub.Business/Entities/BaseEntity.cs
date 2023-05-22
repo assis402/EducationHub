@@ -1,6 +1,9 @@
-﻿using MongoDB.Bson;
+﻿using EducationHub.Shared.Helpers;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using SharpCompress.Common;
+using System.Runtime.CompilerServices;
 
 namespace EducationHub.Business.Entities
 {
@@ -19,7 +22,13 @@ namespace EducationHub.Business.Entities
 
         public DateTime? UpdateDate { get; set; }
 
-        public FilterDefinition<TEntity> GetByIdDefinition<TEntity>(string id)
-            => Builders<TEntity>.Filter.Eq("_id", ObjectId.Parse(id));
+        public FilterDefinition<TEntity> GetByIdDefinition<TEntity>()
+            => Builders<TEntity>.Filter.Eq("_id", Id);
+
+        public static FilterDefinition<TEntity> GetByIdDefinition<TEntity>(string id)
+            => Builders<TEntity>.Filter.Eq("_id", id);
+
+        public static UpdateDefinition<TEntity> SetUpdateDate<TEntity>(UpdateDefinition<TEntity> definition)
+            => definition.Set(nameof(UpdateDate).FirstCharToLowerCase(), Utils.BrazilDateTime());
     }
 }

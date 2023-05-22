@@ -49,10 +49,10 @@ namespace EducationHub.Business.Builders
             return this;
         }
 
-        internal EmailBuilder AccountConfirmation(string recipientEmail, string token)
+        internal EmailBuilder AccountConfirmation(string userName, string recipientEmail, string token)
         {
             var body = Utils.GetDocument(EmailType.AccountConfirmation.ToString(), "min.html");
-            body = body.Replace("[URL]", "google.com.br");
+            body = body.Replace("[URL]", "google.com.br").Replace("[NAME]", userName);
 
             return WithFrom(_sender)
                   .WithSubject("Confirmação de Conta - EducationHub")

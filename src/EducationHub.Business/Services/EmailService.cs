@@ -31,9 +31,9 @@ namespace EducationHub.Business.Services
             };
         }
 
-        public void SendAccountConfirmation(string recipientEmail, UserActionEmailHistory userActionEmailHistory)
+        public void SendAccountConfirmation(User user, UserActionEmailHistory userActionEmailHistory)
         {
-            var email = new EmailBuilder().AccountConfirmation(recipientEmail, userActionEmailHistory.Token).Build();
+            var email = new EmailBuilder().AccountConfirmation(user.Username, user.Email, userActionEmailHistory.Token).Build();
             smtpClient.Send(email);
         }
     }

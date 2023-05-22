@@ -9,5 +9,8 @@ namespace EducationHub.Business.Messages
 
         [Description("Usuário criado com sucesso.")]
         SignUp_Success,
+
+        [Description("Conta confirma com sucesso.")]
+        ConfirmAccount_Success,
     }
 }

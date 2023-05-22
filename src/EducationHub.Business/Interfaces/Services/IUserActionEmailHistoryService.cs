@@ -12,6 +12,6 @@ namespace EducationHub.Business.Interfaces.Services
     {
         public Task<UserActionEmailHistory> Insert(string userId, EmailType emailType);
 
-        public Task CompleteAction(UserActionEmailHistory entity);
+        public Task<bool> CompleteAction(string userId, EmailType emailType);
     }
 }

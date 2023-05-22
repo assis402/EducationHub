@@ -1,5 +1,7 @@
-﻿using EducationHub.Business.Helpers;
+﻿using EducationHub.Business.Enums;
+using EducationHub.Business.Helpers;
 using EducationHub.Shared.Dtos;
+using EducationHub.Shared.Helpers;
 using MongoDB.Driver;
 
 namespace EducationHub.Business.Entities
@@ -10,7 +12,6 @@ namespace EducationHub.Business.Entities
         {
             Email = loginDto.Email;
             Password = CryptographyMD5.Encrypt(loginDto.Password);
-            Role = "student";
         }
 
         public User(SignUpDto signUpDto)
@@ -19,6 +20,7 @@ namespace EducationHub.Business.Entities
             Email = signUpDto.Email;
             Password = CryptographyMD5.Encrypt(signUpDto.Password);
             Role = "student";
+            Status = UserStatus.UnconfirmedAccount;
         }
 
         public string Username { get; private set; }
@@ -29,18 +31,20 @@ namespace EducationHub.Business.Entities
 
         public string Role { get; private set; }
 
-        public bool ConfirmedAccount { get; private set; }
+        public UserStatus Status { get; private set; }
 
         public void ChangePassword(string newPassword) => Password = newPassword;
 
         public UpdateDefinition<User> ChangePasswordUpdateDefinition()
-            => Builders<User>.Update.Set(nameof(Password).ToLower(), Password);
+            => Builders<User>.Update.Set(nameof(Password).FirstCharToLowerCase(), Password);
 
-        public UpdateDefinition<User> ConfirmAccountUpdateDefinition()
-            => Builders<User>.Update.Set(nameof(ConfirmedAccount).ToLower(), true);
+        public static UpdateDefinition<User> ConfirmAccountUpdateDefinition()
+            => Builders<User>.Update.Set(nameof(Status).FirstCharToLowerCase(), UserStatus.Active);
 
-        public FilterDefinition<User> LoginFilterDefinition()
-            => Builders<User>.Filter.Where(x => x.Email.Equals(this.Email) && x.Password.Equals(this.Password));
+        public static FilterDefinition<User> LoginFilterDefinition(LoginDto loginDto)
+            => Builders<User>.Filter.Where(x => 
+                x.Email.Equals(loginDto.Email) &&
+                x.Password.Equals(loginDto.Password));
 
         public FilterDefinition<User> FindByEmailOrUsernameFilterDefinition()
             => Builders<User>.Filter.Where(x => x.Email.Equals(this.Email) || x.Username.Equals(this.Username));

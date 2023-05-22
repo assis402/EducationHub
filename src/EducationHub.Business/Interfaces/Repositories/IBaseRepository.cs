@@ -9,7 +9,9 @@ namespace EducationHub.Business.Interfaces.Repositories
 
         public Task<TEntity> FindOneAsync(FilterDefinition<TEntity> filterDefinition);
 
-        public Task UpdateAsync(string id, TEntity entity, UpdateDefinition<TEntity> updateDefinition);
+        public Task<bool> Exists(FilterDefinition<TEntity> filterDefinition);
+
+        public Task UpdateAsync(TEntity entity, UpdateDefinition<TEntity> updateDefinition);
 
         public Task UpdateAsync(FilterDefinition<TEntity> filterDefinition, UpdateDefinition<TEntity> updateDefinition);
     }

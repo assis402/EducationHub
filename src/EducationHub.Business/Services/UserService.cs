@@ -7,6 +7,7 @@ using EducationHub.Business.Messages;
 using EducationHub.Business.Validators.User;
 using EducationHub.Shared.Dtos;
 using EducationHub.Shared.Helpers;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 
 namespace EducationHub.Business.Services
@@ -33,20 +34,26 @@ namespace EducationHub.Business.Services
         {
             try
             {
-                var validation = new LoginDtoValidator().Validate(loginDto);
+                var loginValidation = new LoginDtoValidator().Validate(loginDto);
 
-                if (!validation.IsValid)
+                if (!loginValidation.IsValid)
                     return Result.Error(
                         EducationHubErrors.Application_Error_InvalidRequest,
-                        validation.Errors);
+                        loginValidation.Errors);
 
-                var user = new User(loginDto);
-                var result = await _repository.FindOneAsync(user.LoginFilterDefinition());
+                var user = await _repository.FindOneAsync(User.LoginFilterDefinition(loginDto));
 
-                if (result is null)
+                if (user is null)
                     return Result.Error(EducationHubErrors.Login_Error_WrongEmailOrPassword);
-                        
-                var token = _tokenService.GenerateToken(result);
+
+                var userValidation = new UserValidator().Validate(user);
+
+                if (!userValidation.IsValid)
+                    return Result.Error(
+                        EducationHubErrors.User_Validation_Fail,
+                        userValidation.Errors);
+
+                var token = _tokenService.GenerateToken(user);
 
                 return Result.Success(
                     EducationHubMessages.Login_Success,
@@ -70,18 +77,15 @@ namespace EducationHub.Business.Services
                         validation.Errors);
 
                 var user = new User(signUpDto);
-                var existsUser = await _repository.FindOneAsync(user.FindByEmailOrUsernameFilterDefinition());
+                var existentUser = await _repository.FindOneAsync(user.FindByEmailOrUsernameFilterDefinition());
 
-                if (existsUser is not null)
+                if (existentUser is not null)
                     return Result.Error(EducationHubErrors.SignUp_Error_UserAlreadyExists);
 
                 await _repository.InsertOneAsync(user);
 
                 var emailHistory = await _userActionEmailHistoryService.Insert(user.Id.ToString(), EmailType.AccountConfirmation);
-                
-                _emailService.SendAccountConfirmation(user.Email, emailHistory);
-
-                await _userActionEmailHistoryService.CompleteAction(emailHistory);
+                _emailService.SendAccountConfirmation(user, emailHistory);
 
                 return Result.Success(EducationHubMessages.SignUp_Success);
             }
@@ -89,6 +93,30 @@ namespace EducationHub.Business.Services
             {
                 return Result.Success(EducationHubErrors.Application_Error_General, ex.ToJson());
             }
+        }
+
+        public async Task<ApiResult> ConfirmAccount(string encriptedData)
+        {
+            if (string.IsNullOrEmpty(encriptedData))
+                return Result.Error(EducationHubErrors.Application_Error_InvalidRequest);
+
+            var confirmAccountDto = encriptedData.ToObject<ConfirmAccountDto>();
+
+            var validation = new ConfirmAccountDtoValidator().Validate(confirmAccountDto);
+
+            if (!validation.IsValid) 
+                return Result.Error(
+                    EducationHubErrors.Application_Error_InvalidRequest,
+                    validation.Errors);
+
+            var completeActionResult = await _userActionEmailHistoryService.CompleteAction(confirmAccountDto.UserId, EmailType.AccountConfirmation);
+
+            if (!completeActionResult)
+                return Result.Error(EducationHubErrors.ConfirmAccount_Error_NotFound);
+
+            await _repository.UpdateAsync(confirmAccountDto.UserId, User.ConfirmAccountUpdateDefinition());
+
+            return Result.Success(EducationHubMessages.ConfirmAccount_Success);
         }
     }
 }

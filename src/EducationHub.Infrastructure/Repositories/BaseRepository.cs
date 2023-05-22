@@ -1,6 +1,9 @@
 ﻿using EducationHub.Business.Entities;
 using EducationHub.Business.Interfaces.Repositories;
+using EducationHub.Shared.Helpers;
 using MongoDB.Driver;
+using Newtonsoft.Json.Linq;
+using SharpCompress.Common;
 
 namespace EducationHub.Infrastructure.Repositories
 {
@@ -10,7 +13,7 @@ namespace EducationHub.Infrastructure.Repositories
 
         public BaseRepository(EducationHubContextDb context)
         {
-            _entityCollection = context.Database.GetCollection<TEntity>(typeof(TEntity).Name.ToLower());
+            _entityCollection = context.Database.GetCollection<TEntity>(typeof(TEntity).Name.FirstCharToLowerCase());
         }
 
         public async Task InsertOneAsync(TEntity user)
@@ -22,16 +25,29 @@ namespace EducationHub.Infrastructure.Repositories
             return await result.FirstOrDefaultAsync();
         }
 
-        public async Task UpdateAsync(string id,
-            TEntity entity,
+        public async Task<bool> Exists(FilterDefinition<TEntity> filterDefinition)
+        {
+            return await _entityCollection.CountDocumentsAsync(filterDefinition) > 0;
+        }
+
+        public async Task UpdateAsync(TEntity entity,
             UpdateDefinition<TEntity> updateDefinition)
         {
-            await _entityCollection.UpdateOneAsync(entity.GetByIdDefinition<TEntity>(id), updateDefinition);
+            BaseEntity.SetUpdateDate(updateDefinition);
+            await _entityCollection.UpdateOneAsync(entity.GetByIdDefinition<TEntity>(), updateDefinition);
+        }
+
+        public async Task UpdateAsync(string id,
+            UpdateDefinition<TEntity> updateDefinition)
+        {
+            BaseEntity.SetUpdateDate(updateDefinition);
+            await _entityCollection.UpdateOneAsync(BaseEntity.GetByIdDefinition<TEntity>(id), updateDefinition);
         }
 
         public async Task UpdateAsync(FilterDefinition<TEntity> filterDefinition,
             UpdateDefinition<TEntity> updateDefinition)
         {
+            BaseEntity.SetUpdateDate(updateDefinition);
             await _entityCollection.UpdateOneAsync(filterDefinition, updateDefinition);
         }
     }

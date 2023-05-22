@@ -17,8 +17,7 @@ namespace EducationHub.Business.Entities
             UserId = userId;
             Type = type;
             Token = CryptographyMD5.EncryptRandomValue();
-            SentAt = DateTime.Now.ToBrazilTime();
-            LastRetryAt = null;
+            LastSendAt = Utils.BrazilDateTime();
         }
 
         public string UserId { get; private set; }
@@ -29,16 +28,33 @@ namespace EducationHub.Business.Entities
 
         public bool Completed { get; private set; }
 
-        public DateTime SentAt { get; private set; }
+        public DateTime? LastSendAt { get; private set; }
 
-        public DateTime? LastRetryAt { get; private set; }
+        public void SetAsCompleted() => Completed = true;
 
-        public void CompleteAction() => Completed = true;
+        public void UpdateToResend()
+        {
+            Token = CryptographyMD5.EncryptRandomValue();
+            LastSendAt = Utils.BrazilDateTime();
+        }
 
-        public UpdateDefinition<UserActionEmailHistory> CompleteActionUpdateDefinition()
-            => Builders<UserActionEmailHistory>.Update.Set(nameof(Completed).ToLower(), true);
+        //public UpdateDefinition<UserActionEmailHistory> CompleteUpdateDefinition()
+        //    => Builders<UserActionEmailHistory>.Update.Set(nameof(Completed).ToLower(), Completed);
+
+        public UpdateDefinition<UserActionEmailHistory> ResendUpdateDefinition()
+            => Builders<UserActionEmailHistory>.Update.Set(nameof(Token).FirstCharToLowerCase(), Token)
+                                                      .Set(nameof(LastSendAt).FirstCharToLowerCase(), LastSendAt);
 
         public FilterDefinition<UserActionEmailHistory> FindByUserIdAndTypeFilterDefinition()
             => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(this.UserId) || x.Type.Equals(this.Type));
+
+        public static UpdateDefinition<UserActionEmailHistory> CompleteUpdateDefinition()
+            => Builders<UserActionEmailHistory>.Update.Set(nameof(Completed).FirstCharToLowerCase(), true);
+
+        public static FilterDefinition<UserActionEmailHistory> FindByUserIdAndTypeFilterDefinition(string userId, EmailType emailType)
+            => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(userId) && x.Type.Equals(emailType));
+
+        public static FilterDefinition<UserActionEmailHistory> FindUncompletedFilterDefinition(string userId, EmailType emailType)
+            => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(userId) && x.Type.Equals(emailType) && x.Completed.Equals(false));
     }
 }
