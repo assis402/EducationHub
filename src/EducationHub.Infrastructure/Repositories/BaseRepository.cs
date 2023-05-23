@@ -27,8 +27,8 @@ namespace EducationHub.Infrastructure.Repositories
 
         public async Task<bool> Exists(FilterDefinition<TEntity> filterDefinition)
         {
-            var entities = await _entityCollection.FindAsync(filterDefinition);
-            return entities.ToList().Count > 0;
+            var result = await _entityCollection.CountDocumentsAsync(filterDefinition);
+            return result > 0;
         }
 
         public async Task UpdateAsync(TEntity entity,
