@@ -1,5 +1,7 @@
-﻿using EducationHub.Business.Enums;
+﻿using EducationHub.Business.Entities;
+using EducationHub.Business.Enums;
 using EducationHub.Business.Models;
+using EducationHub.Shared.Dtos;
 using EducationHub.Shared.Environment;
 using EducationHub.Shared.Helpers;
 using MongoDB.Driver;
@@ -49,16 +51,23 @@ namespace EducationHub.Business.Builders
             return this;
         }
 
-        internal EmailBuilder AccountConfirmation(string userName, string recipientEmail, string token)
+        internal EmailBuilder AccountConfirmation(User user, string token)
         {
+            var confirmAccountDto = new ConfirmAccountDto(user.Id.ToString(), token);
+            var encodedDto = CryptographyBase64.Encrypt(confirmAccountDto);
+
+            var url = Settings.ApplicationBaseUrl
+                .Append("user/confirmAccount?data=")
+                .Append(encodedDto);
+
             var body = Utils.GetDocument(EmailType.AccountConfirmation.ToString(), "min.html");
-            body = body.Replace("[URL]", "google.com.br").Replace("[NAME]", userName);
+            body = body.Replace("[URL]", url).Replace("[NAME]", user.Username);
 
             return WithFrom(_sender)
                   .WithSubject("Confirmação de Conta - EducationHub")
                   .WithType(EmailType.AccountConfirmation)
                   .WithBody(body)
-                  .WithTo(recipientEmail);
+                  .WithTo(user.Email);
         }
 
         internal Email Build() => _instance;

@@ -100,7 +100,8 @@ namespace EducationHub.Business.Services
             if (string.IsNullOrEmpty(encriptedData))
                 return Result.Error(EducationHubErrors.Application_Error_InvalidRequest);
 
-            var confirmAccountDto = encriptedData.ToObject<ConfirmAccountDto>();
+            var decritpedData = CryptographyBase64.Decrypt(encriptedData);
+            var confirmAccountDto = decritpedData.ToObject<ConfirmAccountDto>();
 
             var validation = new ConfirmAccountDtoValidator().Validate(confirmAccountDto);
 

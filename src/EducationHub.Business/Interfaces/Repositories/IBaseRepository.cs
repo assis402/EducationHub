@@ -13,6 +13,8 @@ namespace EducationHub.Business.Interfaces.Repositories
 
         public Task UpdateAsync(TEntity entity, UpdateDefinition<TEntity> updateDefinition);
 
+        public Task UpdateAsync(string id, UpdateDefinition<TEntity> updateDefinition);
+
         public Task UpdateAsync(FilterDefinition<TEntity> filterDefinition, UpdateDefinition<TEntity> updateDefinition);
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EducationHub.API.Controllers
 {
     [ApiController]
-    [Route("v1")]
+    [Route("v1/[controller]/")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -25,6 +25,14 @@ namespace EducationHub.API.Controllers
         public async Task<IActionResult> SignUpAsync([FromBody] SignUpDto signUpDto)
         {
             var result = await _userService.SignUp(signUpDto);
+            return result.Convert();
+        }
+
+        [HttpGet]
+        [Route("confirmAccount")]
+        public async Task<IActionResult> ConfirmAccount([FromQuery] string data)
+        {
+            var result = await _userService.ConfirmAccount(data);
             return result.Convert();
         }
 

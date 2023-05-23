@@ -55,6 +55,6 @@ namespace EducationHub.Business.Entities
             => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(userId) && x.Type.Equals(emailType));
 
         public static FilterDefinition<UserActionEmailHistory> FindUncompletedFilterDefinition(string userId, EmailType emailType)
-            => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(userId) && x.Type.Equals(emailType) && x.Completed.Equals(false));
+            => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(userId) && x.Type.Equals(emailType) && !x.Completed);
     }
 }

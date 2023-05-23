@@ -33,7 +33,7 @@ namespace EducationHub.Business.Services
 
         public void SendAccountConfirmation(User user, UserActionEmailHistory userActionEmailHistory)
         {
-            var email = new EmailBuilder().AccountConfirmation(user.Username, user.Email, userActionEmailHistory.Token).Build();
+            var email = new EmailBuilder().AccountConfirmation(user, userActionEmailHistory.Token).Build();
             smtpClient.Send(email);
         }
     }
