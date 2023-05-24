@@ -1,0 +1,7 @@
+{
+	"descriptionDictonary": {
+		"PT_BR": "API REST em C# .NET 7 com persistência de dados em MongoDB",
+		"EN_US": "API REST with C# .NET 7 and Data Persistence in MongoDB"
+	},
+	"tags": ["Backend", ".NET 7", "REST API", "MongoDB"],
+}
