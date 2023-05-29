@@ -1,4 +1,6 @@
-﻿using EducationHub.Business.Interfaces.Services;
+﻿using EducationHub.API.CustomAttributes;
+using EducationHub.Business.Enums;
+using EducationHub.Business.Interfaces.Services;
 using EducationHub.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,20 +38,13 @@ namespace EducationHub.API.Controllers
             return result.Convert();
         }
 
-        //[HttpGet]
-        //[Authorize]
-        //[Route("test")]
-        //public async Task<ActionResult<dynamic>> Test()
-        //{
-        //    return "test";
-        //}
-
-        //[HttpGet]
-        //[Authorize(Roles = "manager")]
-        //[Route("test2")]
-        //public async Task<ActionResult<dynamic>> Test2()
-        //{
-        //    return "test";
-        //}
+        [HttpGet]
+        [AuthorizeRoles(UserRole.Admin, UserRole.Professor)]
+        [Route("inviteProfesor")]
+        public async Task<IActionResult> InviteProfesor(InviteProfessorDto inviteProfessorDto)
+        {
+            var result = await _userService.InviteProfessor(inviteProfessorDto);
+            return result.Convert();
+        }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Xml.Linq;
 
 namespace EducationHub.Shared.Helpers
 {
@@ -12,7 +10,7 @@ namespace EducationHub.Shared.Helpers
 
         public static string ToJson(this object @object, Formatting formatting = Formatting.Indented)
             => JsonConvert.SerializeObject(@object, formatting);
-        
+
         public static TObject ToObject<TObject>(this string json)
             => JsonConvert.DeserializeObject<TObject>(json);
 
@@ -35,7 +33,7 @@ namespace EducationHub.Shared.Helpers
             return File.ReadAllText(filePath);
         }
 
-        public static string FirstCharToLowerCase(this string @string) 
+        public static string FirstCharToLowerCase(this string @string)
             => char.ToLowerInvariant(@string[0]) + @string[1..];
 
         public static string Append(this string @string, string text)

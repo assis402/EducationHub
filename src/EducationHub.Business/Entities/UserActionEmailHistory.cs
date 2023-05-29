@@ -2,25 +2,30 @@
 using EducationHub.Business.Helpers;
 using EducationHub.Shared.Helpers;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EducationHub.Business.Entities
 {
     public class UserActionEmailHistory : BaseEntity
     {
-        public UserActionEmailHistory(string userId, EmailType type)
+        public UserActionEmailHistory(User user, EmailType type)
         {
-            UserId = userId;
+            UserId = user.Id.ToString();
+            Type = type;
+            Token = CryptographyMD5.EncryptRandomValue();
+            LastSendAt = Utils.BrazilDateTime();
+        }
+
+        public UserActionEmailHistory(string email, EmailType type)
+        {
+            Email = email;
             Type = type;
             Token = CryptographyMD5.EncryptRandomValue();
             LastSendAt = Utils.BrazilDateTime();
         }
 
         public string UserId { get; private set; }
+
+        public string Email { get; private set; }
 
         public EmailType Type { get; private set; }
 
@@ -46,15 +51,33 @@ namespace EducationHub.Business.Entities
                                                       .Set(nameof(LastSendAt).FirstCharToLowerCase(), LastSendAt);
 
         public FilterDefinition<UserActionEmailHistory> FindByUserIdAndTypeFilterDefinition()
-            => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(this.UserId) || x.Type.Equals(this.Type));
+            => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(this.UserId) && x.Type.Equals(this.Type));
 
         public static UpdateDefinition<UserActionEmailHistory> CompleteUpdateDefinition()
             => Builders<UserActionEmailHistory>.Update.Set(nameof(Completed).FirstCharToLowerCase(), true);
 
+        public static UpdateDefinition<UserActionEmailHistory> CompleteUpdateDefinition(string userId)
+            => Builders<UserActionEmailHistory>.Update.Set(nameof(Completed).FirstCharToLowerCase(), true)
+                                                      .Set(nameof(UserId).FirstCharToLowerCase(), userId);
+
         public static FilterDefinition<UserActionEmailHistory> FindByUserIdAndTypeFilterDefinition(string userId, EmailType emailType)
             => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(userId) && x.Type.Equals(emailType));
 
-        public static FilterDefinition<UserActionEmailHistory> FindUncompletedFilterDefinition(string userId, EmailType emailType)
-            => Builders<UserActionEmailHistory>.Filter.Where(x => x.UserId.Equals(userId) && x.Type.Equals(emailType) && !x.Completed);
+        public static FilterDefinition<UserActionEmailHistory> FindByEmailAndTypeFilterDefinition(string email, EmailType emailType)
+            => Builders<UserActionEmailHistory>.Filter.Where(x => x.Email.Equals(email) && x.Type.Equals(emailType));
+
+        public static FilterDefinition<UserActionEmailHistory> FindUncompletedByUserIdFilterDefinition(string userId, string token, EmailType emailType)
+            => Builders<UserActionEmailHistory>.Filter.Where(x =>
+                x.UserId.Equals(userId) &&
+                x.Type.Equals(emailType) &&
+                x.Token.Equals(token) &&
+                !x.Completed);
+
+        public static FilterDefinition<UserActionEmailHistory> FindUncompletedByEmailFilterDefinition(string email, string token, EmailType emailType)
+            => Builders<UserActionEmailHistory>.Filter.Where(x =>
+                x.Email.Equals(email) &&
+                x.Type.Equals(emailType) &&
+                x.Token.Equals(token) &&
+                !x.Completed);
     }
 }

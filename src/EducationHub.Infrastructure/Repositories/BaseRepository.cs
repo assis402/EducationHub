@@ -2,8 +2,6 @@
 using EducationHub.Business.Interfaces.Repositories;
 using EducationHub.Shared.Helpers;
 using MongoDB.Driver;
-using Newtonsoft.Json.Linq;
-using SharpCompress.Common;
 
 namespace EducationHub.Infrastructure.Repositories
 {

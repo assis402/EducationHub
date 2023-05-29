@@ -7,8 +7,6 @@ using EducationHub.Business.Messages;
 using EducationHub.Business.Validators.User;
 using EducationHub.Shared.Dtos;
 using EducationHub.Shared.Helpers;
-using Microsoft.AspNetCore.Http;
-using System.Net;
 
 namespace EducationHub.Business.Services
 {
@@ -82,17 +80,48 @@ namespace EducationHub.Business.Services
                 if (existentUser is not null)
                     return Result.Error(EducationHubErrors.SignUp_Error_UserAlreadyExists);
 
-                await _repository.InsertOneAsync(user);
+                switch (user.Role)
+                {
+                    case UserRole.Student:
+                        return await StudentSignUp(user);
 
-                var emailHistory = await _userActionEmailHistoryService.Insert(user.Id.ToString(), EmailType.AccountConfirmation);
-                _emailService.SendAccountConfirmation(user, emailHistory);
+                    case UserRole.Professor:
+                        return await ProfessorSignUp(user, signUpDto.Token);
 
-                return Result.Success(EducationHubMessages.SignUp_Success);
+                    case UserRole.Admin:
+                    default:
+                        throw new NotImplementedException();
+                }
             }
             catch (Exception ex)
             {
                 return Result.Success(EducationHubErrors.Application_Error_General, ex.ToJson());
             }
+        }
+
+        private async Task<ApiResult> StudentSignUp(User user)
+        {
+            await _repository.InsertOneAsync(user);
+
+            var emailHistory = await _userActionEmailHistoryService.Insert(user, EmailType.AccountConfirmation);
+            _emailService.SendAccountConfirmation(user, emailHistory);
+
+            return Result.Success(EducationHubMessages.SignUp_Success);
+        }
+
+        private async Task<ApiResult> ProfessorSignUp(User user, string actionToken)
+        {
+            if (string.IsNullOrEmpty(actionToken))
+                return Result.Error(EducationHubErrors.SignUp_Error_TokenIsNull);
+
+            var completeActionResult = await _userActionEmailHistoryService.CompleteActionByEmailAndToken(user.Email, actionToken, user.Id.ToString(), EmailType.ProfessorInvitation);
+
+            if (!completeActionResult)
+                return Result.Error(EducationHubErrors.Action_Error_NotFound);
+
+            await _repository.InsertOneAsync(user);
+
+            return Result.Success(EducationHubMessages.SignUp_Success);
         }
 
         public async Task<ApiResult> ConfirmAccount(string encriptedData)
@@ -105,19 +134,34 @@ namespace EducationHub.Business.Services
 
             var validation = new ConfirmAccountDtoValidator().Validate(confirmAccountDto);
 
-            if (!validation.IsValid) 
+            if (!validation.IsValid)
                 return Result.Error(
                     EducationHubErrors.Application_Error_InvalidRequest,
                     validation.Errors);
 
-            var completeActionResult = await _userActionEmailHistoryService.CompleteAction(confirmAccountDto.UserId, EmailType.AccountConfirmation);
+            var completeActionResult = await _userActionEmailHistoryService.CompleteActionByUserIdAndToken(confirmAccountDto.UserId, confirmAccountDto.Token, EmailType.AccountConfirmation);
 
             if (!completeActionResult)
-                return Result.Error(EducationHubErrors.ConfirmAccount_Error_NotFound);
+                return Result.Error(EducationHubErrors.Action_Error_NotFound);
 
             await _repository.UpdateAsync(confirmAccountDto.UserId, User.ConfirmAccountUpdateDefinition());
 
             return Result.Success(EducationHubMessages.ConfirmAccount_Success);
+        }
+
+        public async Task<ApiResult> InviteProfessor(InviteProfessorDto inviteProfessorDto)
+        {
+            var validation = new InviteDtoValidator().Validate(inviteProfessorDto);
+
+            if (!validation.IsValid)
+                return Result.Error(
+                    EducationHubErrors.Application_Error_InvalidRequest,
+                    validation.Errors);
+
+            var emailHistory = await _userActionEmailHistoryService.Insert(inviteProfessorDto.Email, EmailType.AccountConfirmation);
+            _emailService.SendProfessorInvitation(inviteProfessorDto.Email, emailHistory);
+
+            return Result.Success(EducationHubMessages.ProfessorInvitation_Success);
         }
     }
 }

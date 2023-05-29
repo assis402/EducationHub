@@ -1,18 +1,9 @@
-﻿using EducationHub.Business.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using EducationHub.Shared.Environment;
-using Microsoft.AspNetCore.Http;
-using System.Reflection;
-using EducationHub.Business.Builders;
+﻿using EducationHub.Business.Builders;
 using EducationHub.Business.Entities;
-using EducationHub.Business.Models;
-using EducationHub.Business.Enums;
+using EducationHub.Business.Interfaces.Services;
+using EducationHub.Shared.Environment;
+using System.Net;
+using System.Net.Mail;
 
 namespace EducationHub.Business.Services
 {
@@ -21,7 +12,7 @@ namespace EducationHub.Business.Services
         private const string SMTP_HOST = "smtp.gmail.com";
         private readonly SmtpClient smtpClient;
 
-        public EmailService() 
+        public EmailService()
         {
             smtpClient = new SmtpClient(SMTP_HOST)
             {
@@ -34,6 +25,12 @@ namespace EducationHub.Business.Services
         public void SendAccountConfirmation(User user, UserActionEmailHistory userActionEmailHistory)
         {
             var email = new EmailBuilder().AccountConfirmation(user, userActionEmailHistory.Token).Build();
+            smtpClient.Send(email);
+        }
+
+        public void SendProfessorInvitation(string professorEmail, UserActionEmailHistory userActionEmailHistory)
+        {
+            var email = new EmailBuilder().ProfessorInvitation(professorEmail, userActionEmailHistory.Token).Build();
             smtpClient.Send(email);
         }
     }

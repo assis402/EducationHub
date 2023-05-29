@@ -4,20 +4,13 @@ using EducationHub.Business.Models;
 using EducationHub.Shared.Dtos;
 using EducationHub.Shared.Environment;
 using EducationHub.Shared.Helpers;
-using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EducationHub.Business.Builders
 {
     internal class EmailBuilder
     {
-        private readonly Email _instance = new ();
+        private readonly Email _instance = new();
         private readonly string _sender = Settings.EmailSender;
 
         internal EmailBuilder WithFrom(string email)
@@ -68,6 +61,20 @@ namespace EducationHub.Business.Builders
                   .WithType(EmailType.AccountConfirmation)
                   .WithBody(body)
                   .WithTo(user.Email);
+        }
+
+        internal EmailBuilder ProfessorInvitation(string email, string token)
+        {
+            var body = Utils.GetDocument(EmailType.ProfessorInvitation.ToString(), "min.html");
+
+            //TODO: URL do front para criar conta de professor
+            //body = body.Replace("[URL]", url);
+
+            return WithFrom(_sender)
+                  .WithSubject("Convite para professor - EducationHub")
+                  .WithType(EmailType.AccountConfirmation)
+                  .WithBody(body)
+                  .WithTo(email);
         }
 
         internal Email Build() => _instance;

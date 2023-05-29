@@ -10,5 +10,7 @@ namespace EducationHub.Business.Interfaces.Services
         public Task<ApiResult> SignUp(SignUpDto signUpDto);
 
         public Task<ApiResult> ConfirmAccount(string encriptedData);
+
+        public Task<ApiResult> InviteProfessor(InviteProfessorDto inviteProfessorDto);
     }
 }

@@ -2,8 +2,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
-using SharpCompress.Common;
-using System.Runtime.CompilerServices;
 
 namespace EducationHub.Business.Entities
 {

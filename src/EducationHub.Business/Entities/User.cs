@@ -19,7 +19,7 @@ namespace EducationHub.Business.Entities
             Username = signUpDto.Username;
             Email = signUpDto.Email;
             Password = CryptographyMD5.Encrypt(signUpDto.Password);
-            Role = "student";
+            Role = Enum.Parse<UserRole>(signUpDto.Role, true);
             Status = UserStatus.UnconfirmedAccount;
         }
 
@@ -29,7 +29,7 @@ namespace EducationHub.Business.Entities
 
         public string Password { get; private set; }
 
-        public string Role { get; private set; }
+        public UserRole Role { get; private set; }
 
         public UserStatus Status { get; private set; }
 
@@ -42,7 +42,7 @@ namespace EducationHub.Business.Entities
             => Builders<User>.Update.Set(nameof(Status).FirstCharToLowerCase(), UserStatus.Active);
 
         public static FilterDefinition<User> LoginFilterDefinition(LoginDto loginDto)
-            => Builders<User>.Filter.Where(x => 
+            => Builders<User>.Filter.Where(x =>
                 x.Email.Equals(loginDto.Email) &&
                 x.Password.Equals(loginDto.Password));
 

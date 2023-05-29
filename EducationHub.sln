@@ -24,8 +24,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EducationHub.Infrastructure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EducationHub.Shared", "src\EducationHub.Shared\EducationHub.Shared.csproj", "{2D6FEA35-3A9F-4FA5-ADB4-89BD1507F3AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiResults", "src\ApiResults\ApiResults.csproj", "{EB709BEC-24D6-45B9-B5E7-2ED09834DB91}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,10 +46,6 @@ Global
 		{2D6FEA35-3A9F-4FA5-ADB4-89BD1507F3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D6FEA35-3A9F-4FA5-ADB4-89BD1507F3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D6FEA35-3A9F-4FA5-ADB4-89BD1507F3AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB709BEC-24D6-45B9-B5E7-2ED09834DB91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB709BEC-24D6-45B9-B5E7-2ED09834DB91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB709BEC-24D6-45B9-B5E7-2ED09834DB91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB709BEC-24D6-45B9-B5E7-2ED09834DB91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

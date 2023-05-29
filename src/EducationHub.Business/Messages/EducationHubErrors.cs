@@ -17,6 +17,9 @@ namespace EducationHub.Business.Messages
         [Description("'Email' está inválido.")]
         Login_Validation_InvalidEmail,
 
+        [Description("'Role' está inválido.")]
+        SignUp_Validation_InvalidRole,
+
         [Description("Não foi possível realizar o login.")]
         User_Validation_Fail,
 
@@ -34,8 +37,12 @@ namespace EducationHub.Business.Messages
         [Description("Já existe um usuário com o mesmo Username ou mesmo Email.")]
         SignUp_Error_UserAlreadyExists,
 
+        [StatusCode(HttpStatusCode.BadRequest)]
+        [Description("'Token' não pode ser nulo.")]
+        SignUp_Error_TokenIsNull,
+
         [StatusCode(HttpStatusCode.NotFound)]
         [Description("Esta ação não foi iniciada ou já se encontra completada.")]
-        ConfirmAccount_Error_NotFound,
+        Action_Error_NotFound,
     }
 }
