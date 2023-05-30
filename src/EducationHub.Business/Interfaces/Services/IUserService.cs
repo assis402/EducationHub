@@ -1,5 +1,5 @@
 ﻿using ApiResults;
-using EducationHub.Shared.Dtos;
+using EducationHub.Shared.Dtos.User;
 
 namespace EducationHub.Business.Interfaces.Services
 {

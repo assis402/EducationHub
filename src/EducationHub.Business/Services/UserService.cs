@@ -5,7 +5,7 @@ using EducationHub.Business.Interfaces.Repositories;
 using EducationHub.Business.Interfaces.Services;
 using EducationHub.Business.Messages;
 using EducationHub.Business.Validators.User;
-using EducationHub.Shared.Dtos;
+using EducationHub.Shared.Dtos.User;
 using EducationHub.Shared.Helpers;
 
 namespace EducationHub.Business.Services
@@ -80,18 +80,12 @@ namespace EducationHub.Business.Services
                 if (existentUser is not null)
                     return Result.Error(EducationHubErrors.SignUp_Error_UserAlreadyExists);
 
-                switch (user.Role)
+                return user.Role switch
                 {
-                    case UserRole.Student:
-                        return await StudentSignUp(user);
-
-                    case UserRole.Professor:
-                        return await ProfessorSignUp(user, signUpDto.Token);
-
-                    case UserRole.Admin:
-                    default:
-                        throw new NotImplementedException();
-                }
+                    UserRole.Student => await StudentSignUp(user),
+                    UserRole.Professor => await ProfessorSignUp(user, signUpDto.Token),
+                    _ => throw new NotImplementedException(),
+                };
             }
             catch (Exception ex)
             {

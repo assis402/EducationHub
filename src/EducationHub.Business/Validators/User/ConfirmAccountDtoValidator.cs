@@ -1,4 +1,4 @@
-﻿using EducationHub.Shared.Dtos;
+﻿using EducationHub.Shared.Dtos.User;
 using FluentValidation;
 
 namespace EducationHub.Business.Validators.User

@@ -1,6 +1,6 @@
 ﻿using ApiResults.Helpers;
 using EducationHub.Business.Messages;
-using EducationHub.Shared.Dtos;
+using EducationHub.Shared.Dtos.User;
 using FluentValidation;
 
 namespace EducationHub.Business.Validators.User

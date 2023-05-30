@@ -1,6 +1,8 @@
 ﻿using EducationHub.API.CustomAttributes;
 using EducationHub.Business.Enums;
-using EducationHub.Shared.Dtos;
+using EducationHub.Business.Interfaces.Services;
+using EducationHub.Business.Validators.User;
+using EducationHub.Shared.Dtos.Course;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +13,13 @@ namespace EducationHub.API.Controllers
     [Authorize]
     public class CourseController : ControllerBase
     {
+        private readonly ICourseService _courseService;
+
+        public CourseController(ICourseService courseService)
+        {
+            _courseService = courseService;
+        }
+
         [HttpGet]
         public string Get()
         {
@@ -19,8 +28,11 @@ namespace EducationHub.API.Controllers
 
         [HttpPost]
         [AuthorizeRoles(UserRole.Admin, UserRole.Professor)]
-        public void Insert(CourseDto courseDto)
+        public async Task<IActionResult> Insert(CoursePostDto courseDto)
         {
+            courseDto.SetUserId(User);
+            var result = await _courseService.Insert(courseDto);
+            return result.Convert();
         }
 
         [HttpPut("{id}")]

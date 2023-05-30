@@ -44,5 +44,29 @@ namespace EducationHub.Business.Messages
         [StatusCode(HttpStatusCode.NotFound)]
         [Description("Esta ação não foi iniciada ou já se encontra completada.")]
         Action_Error_NotFound,
+
+        [StatusCode(HttpStatusCode.BadRequest)]
+        [Description("Já um curso com o mesmo títilo.")]
+        CourseInsert_Error_AlreadyExists,
+
+        [StatusCode(HttpStatusCode.BadRequest)]
+        [Description("Já um curso com o mesmo títilo.")]
+        CourseUpdate_Error_AlreadyExists,
+
+        [StatusCode(HttpStatusCode.NotFound)]
+        [Description("Curso não encontrado.")]
+        CourseUpdate_Error_NotFound,
+
+        [StatusCode(HttpStatusCode.Forbidden)]
+        [Description("Usuário não possui permissão para alterar este curso.")]
+        CourseUpdate_Error_Forbidden,
+
+        [StatusCode(HttpStatusCode.NotFound)]
+        [Description("Curso não encontrado.")]
+        CourseDelete_Error_NotFound,
+
+        [StatusCode(HttpStatusCode.Forbidden)]
+        [Description("Usuário não possui permissão para deletar este curso.")]
+        CourseDelete_Error_Forbidden,
     }
 }

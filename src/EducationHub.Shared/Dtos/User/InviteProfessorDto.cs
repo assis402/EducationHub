@@ -1,4 +1,4 @@
-﻿namespace EducationHub.Shared.Dtos
+﻿namespace EducationHub.Shared.Dtos.User
 {
     public class InviteProfessorDto
     {

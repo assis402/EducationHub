@@ -17,6 +17,12 @@ namespace EducationHub.Infrastructure.Repositories
         public async Task InsertOneAsync(TEntity user)
             => await _entityCollection.InsertOneAsync(user);
 
+        public async Task<IEnumerable<TEntity>> FindManyAsync(FilterDefinition<TEntity> filterDefinition)
+        {
+            var result = await _entityCollection.FindAsync(filterDefinition);
+            return await result.ToListAsync();
+        }
+
         public async Task<TEntity> FindOneAsync(FilterDefinition<TEntity> filterDefinition)
         {
             var result = await _entityCollection.FindAsync(filterDefinition);
@@ -48,6 +54,12 @@ namespace EducationHub.Infrastructure.Repositories
         {
             BaseEntity.SetUpdateDate(updateDefinition);
             await _entityCollection.UpdateOneAsync(filterDefinition, updateDefinition);
+        }
+
+        public async Task DeleteOneAsync(string id)
+        {
+            var filterDefinition = BaseEntity.GetByIdDefinition<TEntity>(id);
+            await _entityCollection.DeleteOneAsync(filterDefinition);
         }
     }
 }

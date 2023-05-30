@@ -1,6 +1,6 @@
 ﻿using EducationHub.Business.Enums;
 using EducationHub.Business.Helpers;
-using EducationHub.Shared.Dtos;
+using EducationHub.Shared.Dtos.User;
 using EducationHub.Shared.Helpers;
 using MongoDB.Driver;
 

@@ -1,7 +1,7 @@
 ﻿using EducationHub.API.CustomAttributes;
 using EducationHub.Business.Enums;
 using EducationHub.Business.Interfaces.Services;
-using EducationHub.Shared.Dtos;
+using EducationHub.Shared.Dtos.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationHub.API.Controllers

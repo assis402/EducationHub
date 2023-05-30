@@ -7,6 +7,8 @@ namespace EducationHub.Business.Interfaces.Repositories
     {
         public Task InsertOneAsync(TEntity user);
 
+        public Task FindManyAsync(FilterDefinition<TEntity> filterDefinition);
+
         public Task<TEntity> FindOneAsync(FilterDefinition<TEntity> filterDefinition);
 
         public Task<bool> Exists(FilterDefinition<TEntity> filterDefinition);
@@ -16,5 +18,7 @@ namespace EducationHub.Business.Interfaces.Repositories
         public Task UpdateAsync(string id, UpdateDefinition<TEntity> updateDefinition);
 
         public Task UpdateAsync(FilterDefinition<TEntity> filterDefinition, UpdateDefinition<TEntity> updateDefinition);
+
+        public Task DeleteOneAsync(string id);
     }
 }
