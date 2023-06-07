@@ -1,17 +1,13 @@
-﻿using EducationHub.Shared.Dtos.Course;
+﻿using EducationHub.Shared.Dtos.CourseSection;
 using FluentValidation;
 
 namespace EducationHub.Business.Validators.Course
 {
-    public class CoursePostDtoValidator : AbstractValidator<CoursePostDto>
+    public class CourseSectionPostDtoValidator : AbstractValidator<CourseSectionPostDto>
     {
-        public CoursePostDtoValidator()
+        public CourseSectionPostDtoValidator()
         {
             RuleFor(x => x.Title)
-                .NotEmpty()
-                .NotNull();
-
-            RuleFor(x => x.Description)
                 .NotEmpty()
                 .NotNull();
 

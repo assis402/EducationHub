@@ -1,13 +1,17 @@
-﻿using EducationHub.Shared.Dtos.Course;
+﻿using EducationHub.Shared.Dtos.Video;
 using FluentValidation;
 
-namespace EducationHub.Business.Validators.Course
+namespace EducationHub.Business.Validators.Video
 {
-    public class CoursePostDtoValidator : AbstractValidator<CoursePostDto>
+    public class VideoPostDtoValidator : AbstractValidator<VideoPostDto>
     {
-        public CoursePostDtoValidator()
+        public VideoPostDtoValidator()
         {
             RuleFor(x => x.Title)
+                .NotEmpty()
+                .NotNull();
+
+            RuleFor(x => x.CourseId)
                 .NotEmpty()
                 .NotNull();
 

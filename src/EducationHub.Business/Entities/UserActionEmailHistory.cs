@@ -10,6 +10,7 @@ namespace EducationHub.Business.Entities
         public UserActionEmailHistory(User user, EmailType type)
         {
             UserId = user.Id.ToString();
+            Email = user.Email;
             Type = type;
             Token = CryptographyMD5.EncryptRandomValue();
             LastSendAt = Utils.BrazilDateTime();

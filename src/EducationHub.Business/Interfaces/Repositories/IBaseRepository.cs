@@ -7,17 +7,17 @@ namespace EducationHub.Business.Interfaces.Repositories
     {
         public Task InsertOneAsync(TEntity user);
 
-        public Task FindManyAsync(FilterDefinition<TEntity> filterDefinition);
+        public Task<IEnumerable<TEntity>> FindAsync(FilterDefinition<TEntity> filterDefinition);
 
         public Task<TEntity> FindOneAsync(FilterDefinition<TEntity> filterDefinition);
 
         public Task<bool> Exists(FilterDefinition<TEntity> filterDefinition);
 
-        public Task UpdateAsync(TEntity entity, UpdateDefinition<TEntity> updateDefinition);
+        public Task UpdateOneAsync(TEntity entity, UpdateDefinition<TEntity> updateDefinition);
 
-        public Task UpdateAsync(string id, UpdateDefinition<TEntity> updateDefinition);
+        public Task UpdateOneAsync(string id, UpdateDefinition<TEntity> updateDefinition);
 
-        public Task UpdateAsync(FilterDefinition<TEntity> filterDefinition, UpdateDefinition<TEntity> updateDefinition);
+        public Task UpdateOneAsync(FilterDefinition<TEntity> filterDefinition, UpdateDefinition<TEntity> updateDefinition);
 
         public Task DeleteOneAsync(string id);
     }

@@ -17,7 +17,7 @@ namespace EducationHub.Infrastructure.Repositories
         public async Task InsertOneAsync(TEntity user)
             => await _entityCollection.InsertOneAsync(user);
 
-        public async Task<IEnumerable<TEntity>> FindManyAsync(FilterDefinition<TEntity> filterDefinition)
+        public async Task<IEnumerable<TEntity>> FindAsync(FilterDefinition<TEntity> filterDefinition)
         {
             var result = await _entityCollection.FindAsync(filterDefinition);
             return await result.ToListAsync();
@@ -35,24 +35,24 @@ namespace EducationHub.Infrastructure.Repositories
             return result > 0;
         }
 
-        public async Task UpdateAsync(TEntity entity,
+        public async Task UpdateOneAsync(TEntity entity,
             UpdateDefinition<TEntity> updateDefinition)
         {
-            BaseEntity.SetUpdateDate(updateDefinition);
+            updateDefinition = BaseEntity.SetUpdateDate(updateDefinition);
             await _entityCollection.UpdateOneAsync(entity.GetByIdDefinition<TEntity>(), updateDefinition);
         }
 
-        public async Task UpdateAsync(string id,
+        public async Task UpdateOneAsync(string id,
             UpdateDefinition<TEntity> updateDefinition)
         {
-            BaseEntity.SetUpdateDate(updateDefinition);
+            updateDefinition = BaseEntity.SetUpdateDate(updateDefinition);
             await _entityCollection.UpdateOneAsync(BaseEntity.GetByIdDefinition<TEntity>(id), updateDefinition);
         }
 
-        public async Task UpdateAsync(FilterDefinition<TEntity> filterDefinition,
+        public async Task UpdateOneAsync(FilterDefinition<TEntity> filterDefinition,
             UpdateDefinition<TEntity> updateDefinition)
         {
-            BaseEntity.SetUpdateDate(updateDefinition);
+            updateDefinition = BaseEntity.SetUpdateDate(updateDefinition);
             await _entityCollection.UpdateOneAsync(filterDefinition, updateDefinition);
         }
 

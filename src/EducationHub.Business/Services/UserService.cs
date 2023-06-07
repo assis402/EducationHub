@@ -138,7 +138,7 @@ namespace EducationHub.Business.Services
             if (!completeActionResult)
                 return Result.Error(EducationHubErrors.Action_Error_NotFound);
 
-            await _repository.UpdateAsync(confirmAccountDto.UserId, User.ConfirmAccountUpdateDefinition());
+            await _repository.UpdateOneAsync(confirmAccountDto.UserId, User.ConfirmAccountUpdateDefinition());
 
             return Result.Success(EducationHubMessages.ConfirmAccount_Success);
         }

@@ -9,6 +9,7 @@ using EducationHub.Shared.Environment;
 using EducationHub.Shared.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,34 @@ if (builder.Environment.IsDevelopment())
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "EducationHub API", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 var key = Settings.Secret.ConvertToASCII();
 builder.Services.AddAuthentication(x =>
@@ -31,8 +59,9 @@ builder.Services.AddAuthentication(x =>
         x.SaveToken = false;
         x.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
+            //TODO conferir as validations
+            ValidateIssuer = false,
+            ValidateAudience = false,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
@@ -42,6 +71,8 @@ builder.Services.AddSingleton<EducationHubContextDb>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ICourseService, CourseService>();
+builder.Services.AddTransient<IBaseRepository<Course>, BaseRepository<Course>>();
 builder.Services.AddTransient<IUserActionEmailHistoryService, UserActionEmailHistoryService>();
 builder.Services.AddTransient<IBaseRepository<User>, BaseRepository<User>>();
 builder.Services.AddTransient<IBaseRepository<UserActionEmailHistory>, BaseRepository<UserActionEmailHistory>>();

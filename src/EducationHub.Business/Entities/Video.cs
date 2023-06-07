@@ -4,6 +4,8 @@
     {
         public string CourseId { get; set; }
 
+        public string SectionId { get; set; }
+
         public string Url { get; set; }
 
         public string Description { get; set; }

@@ -3,6 +3,7 @@ using EducationHub.Business.Enums;
 using EducationHub.Business.Messages;
 using EducationHub.Shared.Dtos.User;
 using FluentValidation;
+using static EducationHub.Shared.Helpers.Utils;
 
 namespace EducationHub.Business.Validators.User
 {
@@ -21,7 +22,7 @@ namespace EducationHub.Business.Validators.User
                 .NotNull();
 
             RuleFor(x => x.Role)
-                .Must(x => Enum.IsDefined(typeof(UserRole), x))
+                .Must(ValidateEnum<UserRole>)
                 .WithMessage(EducationHubErrors.SignUp_Validation_InvalidRole.Description());
         }
     }

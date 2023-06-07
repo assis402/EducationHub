@@ -43,5 +43,14 @@ namespace EducationHub.Shared.Helpers
 
             return new StringBuilder(@string).Append(text).ToString();
         }
+
+        public static bool IsNotNullAndNotEmpty(this string text)
+            => !string.IsNullOrEmpty(text) && !string.IsNullOrWhiteSpace(text);
+
+        public static bool ValidateEnum<TEnum>(string value) where TEnum : Enum
+            => Enum.GetNames(typeof(TEnum)).Any(x => x.ToLower() == value.ToLower());
+
+        public static string GetUserId(ClaimsPrincipal user)
+            => user?.Claims?.FirstOrDefault(x => x.Type.Equals("Id")).Value;
     }
 }

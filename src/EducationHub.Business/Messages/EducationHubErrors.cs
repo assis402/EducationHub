@@ -45,6 +45,10 @@ namespace EducationHub.Business.Messages
         [Description("Esta ação não foi iniciada ou já se encontra completada.")]
         Action_Error_NotFound,
 
+        [StatusCode(HttpStatusCode.NotFound)]
+        [Description("Registro não encontrado.")]
+        Error_NotFound,
+
         [StatusCode(HttpStatusCode.BadRequest)]
         [Description("Já um curso com o mesmo títilo.")]
         CourseInsert_Error_AlreadyExists,
@@ -53,20 +57,20 @@ namespace EducationHub.Business.Messages
         [Description("Já um curso com o mesmo títilo.")]
         CourseUpdate_Error_AlreadyExists,
 
-        [StatusCode(HttpStatusCode.NotFound)]
-        [Description("Curso não encontrado.")]
-        CourseUpdate_Error_NotFound,
-
         [StatusCode(HttpStatusCode.Forbidden)]
         [Description("Usuário não possui permissão para alterar este curso.")]
         CourseUpdate_Error_Forbidden,
 
-        [StatusCode(HttpStatusCode.NotFound)]
-        [Description("Curso não encontrado.")]
-        CourseDelete_Error_NotFound,
+        [StatusCode(HttpStatusCode.Forbidden)]
+        [Description("'Status' está invalido.")]
+        CourseUpdate_Validation_InvalidStatus,
 
         [StatusCode(HttpStatusCode.Forbidden)]
         [Description("Usuário não possui permissão para deletar este curso.")]
         CourseDelete_Error_Forbidden,
+
+        [StatusCode(HttpStatusCode.BadRequest)]
+        [Description("É necessário enviar 4 alternativas.")]
+        Question_Error_Validation,
     }
 }

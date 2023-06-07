@@ -1,7 +1,7 @@
 ﻿using EducationHub.API.CustomAttributes;
 using EducationHub.Business.Enums;
 using EducationHub.Business.Interfaces.Services;
-using EducationHub.Business.Validators.User;
+using EducationHub.Shared.Dtos;
 using EducationHub.Shared.Dtos.Course;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,28 +21,37 @@ namespace EducationHub.API.Controllers
         }
 
         [HttpGet]
-        public string Get()
+        public async Task<IActionResult> Get([FromQuery] CourseGetByFilterDto courseGetByFilterDto)
         {
-            return
+            courseGetByFilterDto.SetUserId(User);
+            var result = await _courseService.GetAllByFilter(courseGetByFilterDto);
+            return result.Convert();
         }
 
         [HttpPost]
         [AuthorizeRoles(UserRole.Admin, UserRole.Professor)]
-        public async Task<IActionResult> Insert(CoursePostDto courseDto)
+        public async Task<IActionResult> Insert(CoursePostDto coursePostDto)
         {
-            courseDto.SetUserId(User);
-            var result = await _courseService.Insert(courseDto);
+            coursePostDto.SetUserId(User);
+            var result = await _courseService.Insert(coursePostDto);
             return result.Convert();
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        [AuthorizeRoles(UserRole.Admin, UserRole.Professor)]
+        public async Task<IActionResult> Put(CoursePutDto coursePutDto)
         {
+            coursePutDto.SetUserId(User);
+            var result = await _courseService.Update(coursePutDto);
+            return result.Convert();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [AuthorizeRoles(UserRole.Admin, UserRole.Professor)]
+        public async Task<IActionResult> Delete([FromRoute] string id)
         {
+            var result = await _courseService.Delete(new DeleteDto(id, User));
+            return result.Convert();
         }
     }
 }

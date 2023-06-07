@@ -27,7 +27,7 @@ namespace EducationHub.Business.Services
             else
             {
                 existentEntity.UpdateToResend();
-                await _repository.UpdateAsync(existentEntity, existentEntity.ResendUpdateDefinition());
+                await _repository.UpdateOneAsync(existentEntity, existentEntity.ResendUpdateDefinition());
                 return existentEntity;
             }
         }
@@ -45,7 +45,7 @@ namespace EducationHub.Business.Services
             else
             {
                 existentEntity.UpdateToResend();
-                await _repository.UpdateAsync(existentEntity, existentEntity.ResendUpdateDefinition());
+                await _repository.UpdateOneAsync(existentEntity, existentEntity.ResendUpdateDefinition());
                 return existentEntity;
             }
         }
@@ -59,7 +59,7 @@ namespace EducationHub.Business.Services
             if (!exists)
                 return false;
 
-            await _repository.UpdateAsync(filterDefinition,
+            await _repository.UpdateOneAsync(filterDefinition,
                 UserActionEmailHistory.CompleteUpdateDefinition());
 
             return true;
@@ -74,7 +74,7 @@ namespace EducationHub.Business.Services
             if (!exists)
                 return false;
 
-            await _repository.UpdateAsync(filterDefinition,
+            await _repository.UpdateOneAsync(filterDefinition,
                 UserActionEmailHistory.CompleteUpdateDefinition(userId));
 
             return true;

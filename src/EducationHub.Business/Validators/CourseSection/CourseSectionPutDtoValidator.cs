@@ -1,18 +1,17 @@
-﻿using EducationHub.Shared.Dtos.Course;
+﻿using EducationHub.Shared.Dtos.CourseSection;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EducationHub.Business.Validators.Course
 {
-    public class CourseDeleteDtoValidator : AbstractValidator<CourseDeleteDto>
+    public class CourseSectionPutDtoValidator : AbstractValidator<CourseSectionPutDto>
     {
-        public CourseDeleteDtoValidator()
+        public CourseSectionPutDtoValidator()
         {
             RuleFor(x => x.Id)
+                .NotEmpty()
+                .NotNull();
+
+            RuleFor(x => x.Title)
                 .NotEmpty()
                 .NotNull();
 

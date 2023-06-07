@@ -1,22 +1,19 @@
 ﻿using ApiResults;
-using EducationHub.Business.Entities;
+using EducationHub.Shared.Dtos;
 using EducationHub.Shared.Dtos.Course;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EducationHub.Business.Interfaces.Services
 {
     public interface ICourseService
     {
-        public Task<ApiResult> Insert(CoursePostDto courseDto);
+        public Task<ApiResult> Insert(CoursePostDto coursePostDto);
 
-        public Task<ApiResult> Update(CoursePostDto courseDto);
+        public Task<ApiResult> Update(CoursePutDto coursePutDto);
 
-        public Task<ApiResult> Delete(string courseId);
+        public Task<ApiResult> Delete(DeleteDto courseDeleteDto);
 
         public Task<ApiResult> GetAllByFilter(CourseGetByFilterDto courseGetByFilterDto);
+
+        public Task<ApiResult> GetById(string courseId);
     }
 }

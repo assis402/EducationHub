@@ -44,7 +44,7 @@ namespace EducationHub.Business.Entities
         public static FilterDefinition<User> LoginFilterDefinition(LoginDto loginDto)
             => Builders<User>.Filter.Where(x =>
                 x.Email.Equals(loginDto.Email) &&
-                x.Password.Equals(loginDto.Password));
+                x.Password.Equals(CryptographyMD5.Encrypt(loginDto.Password)));
 
         public FilterDefinition<User> FindByEmailOrUsernameFilterDefinition()
             => Builders<User>.Filter.Where(x => x.Email.Equals(this.Email) || x.Username.Equals(this.Username));

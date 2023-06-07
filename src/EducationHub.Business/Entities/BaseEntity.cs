@@ -24,7 +24,7 @@ namespace EducationHub.Business.Entities
             => Builders<TEntity>.Filter.Eq("_id", Id);
 
         public static FilterDefinition<TEntity> GetByIdDefinition<TEntity>(string id)
-            => Builders<TEntity>.Filter.Eq("_id", id);
+            => Builders<TEntity>.Filter.Eq("_id", ObjectId.Parse(id));
 
         public static UpdateDefinition<TEntity> SetUpdateDate<TEntity>(UpdateDefinition<TEntity> definition)
             => definition.Set(nameof(UpdateDate).FirstCharToLowerCase(), Utils.BrazilDateTime());

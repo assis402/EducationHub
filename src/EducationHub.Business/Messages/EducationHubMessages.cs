@@ -21,41 +21,17 @@ namespace EducationHub.Business.Messages
         [StatusCode(HttpStatusCode.OK)]
         [Description("Convite enviado com sucesso.")]
         ProfessorInvitation_Success,
-        
+
         [StatusCode(HttpStatusCode.Created)]
-        [Description("Curso criado com sucesso.")]
-        CourseInsert_Success,  
-        
-        [StatusCode(HttpStatusCode.Created)]
-        [Description("Vídeo inserido com sucesso.")]
-        VideoInsert_Success,  
-        
-        [StatusCode(HttpStatusCode.Created)]
-        [Description("Questão criada com sucesso.")]
-        QuestionInsert_Success,
+        [Description("Criado com sucesso.")]
+        Insert_Success,
 
         [StatusCode(HttpStatusCode.OK)]
-        [Description("Curso atualizado com sucesso.")]
-        CourseUpdate_Success,
+        [Description("Atualizado com sucesso.")]
+        Update_Success,
 
         [StatusCode(HttpStatusCode.OK)]
-        [Description("Vídeo atualizado com sucesso.")]
-        VideoUpdate_Success,
-
-        [StatusCode(HttpStatusCode.OK)]
-        [Description("Questão atualizada com sucesso.")]
-        QuestionUpdate_Success,
-
-        [StatusCode(HttpStatusCode.OK)]
-        [Description("Curso deletado com sucesso.")]
-        CourseDelete_Success,
-
-        [StatusCode(HttpStatusCode.OK)]
-        [Description("Vídeo deletado com sucesso.")]
-        VideoDelete_Success,
-
-        [StatusCode(HttpStatusCode.OK)]
-        [Description("Questão deletada com sucesso.")]
-        QuestionDelete_Success,
+        [Description("Deletado com sucesso.")]
+        Delete_Success,
     }
 }

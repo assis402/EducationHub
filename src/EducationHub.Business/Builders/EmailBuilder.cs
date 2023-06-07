@@ -1,7 +1,7 @@
 ﻿using EducationHub.Business.Entities;
 using EducationHub.Business.Enums;
 using EducationHub.Business.Models;
-using EducationHub.Shared.Dtos;
+using EducationHub.Shared.Dtos.User;
 using EducationHub.Shared.Environment;
 using EducationHub.Shared.Helpers;
 using System.Net.Mail;
