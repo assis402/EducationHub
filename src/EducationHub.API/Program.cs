@@ -72,8 +72,10 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ICourseService, CourseService>();
-builder.Services.AddTransient<IBaseRepository<Course>, BaseRepository<Course>>();
+builder.Services.AddTransient<ICourseSectionService, CourseSectionService>();
 builder.Services.AddTransient<IUserActionEmailHistoryService, UserActionEmailHistoryService>();
+builder.Services.AddTransient<IBaseRepository<Course>, BaseRepository<Course>>();
+builder.Services.AddTransient<IBaseRepository<CourseSection>, BaseRepository<CourseSection>>();
 builder.Services.AddTransient<IBaseRepository<User>, BaseRepository<User>>();
 builder.Services.AddTransient<IBaseRepository<UserActionEmailHistory>, BaseRepository<UserActionEmailHistory>>();
 

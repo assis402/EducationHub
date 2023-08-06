@@ -1,6 +1,6 @@
 ﻿namespace EducationHub.Shared.Dtos.Question
 {
-    public class QuestionPostDto
+    public class QuestionPostDto : BaseDto
     {
         public string CourseId { get; init; }
 
